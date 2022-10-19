@@ -271,7 +271,18 @@ $('.print-button').on('click', function() {
 	maxZoom: 7
 	});
 
-    OSM_node_2018.addTo(map);
+    var OSM_node_2020 = L.tileLayer('https://s3-eu-west-1.amazonaws.com/osm-node-density/2020/{z}/{x}/{y}.png', {
+	attribution: 'data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://openstreetmap.org/copyright">ODbL</a>, Imagery © <a href="http://www.openstreetmap.org/user/tyr_asd/">Martin Raifer</a>, <a href="http://creativecommons.org/licenses/by/3.0/">cc-by</a>',
+	maxZoom: 7
+	});
+
+    var OSM_node_2022 = L.tileLayer('https://s3-eu-west-1.amazonaws.com/osm-node-density/2022/{z}/{x}/{y}.png', {
+	attribution: 'data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://openstreetmap.org/copyright">ODbL</a>, Imagery © <a href="http://www.openstreetmap.org/user/tyr_asd/">Martin Raifer</a>, <a href="http://creativecommons.org/licenses/by/3.0/">cc-by</a>',
+	maxZoom: 7
+	});
+
+
+    OSM_node_2022.addTo(map);
 //-------------------------------------------------------------------------------------------------------------------------------------
 
 	//Missing maps tasks visualisation
@@ -358,10 +369,13 @@ $('.print-button').on('click', function() {
         var baseMaps = {
             "OpenStreetMap":openstreetmap, 
             "OSM node density 2014": OSM_node_2014, 
-            "OSM node density 2015": OSM_node_2015, 
+            
             "OSM node density 2016": OSM_node_2016,
-            "OSM node density 2017": OSM_node_2017,
-	    "OSM node density 2018": OSM_node_2018
+            
+ 	      "OSM node density 2018": OSM_node_2018, 
+            "OSM node density 2020": OSM_node_2020,
+            "OSM node density 2022": OSM_node_2022
+
          };
       
         L.control.layers(baseMaps,{ 'Tanzania map - ward level': Allwards, 'Missing map tasks': TNZDevelopmentTrust },{collapsed:false}).addTo(map);
