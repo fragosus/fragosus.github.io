@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en" ng-app="TNZapp">
+ 
+  <style>
+    .main-container { margin: 30px; }
+  	.redBg { background-color: red; }
+  	.custom-table-style { width: 100%; }
+  	.custom-table-style td, .custom-table-style th {color: white; background-color: black; border: solid; border-color: red; text-align: center; } 
+		.sort-icon {font-size: 9px; margin-left: 5px;}
+		th {cursor:pointer;}
+  </style>
+ 
+  <head>
+	
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="">
+  <meta name="author" content="">	
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/dc.min.css">
+
+	<script type="text/javascript" src="./js/crossfilter.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js" charset="utf-8"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/1.7.5/dc.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+	<script src="./js/dirPagination.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="./js/alasql.min.js"></script>
+ 	  
+  </head>
+  
+  <body>
+
+<div class="navbar navbar-default navbar-inverse bg-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+				<div class="navbar-icon-container">
+					<a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+					<a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
+				</div>
+				<a class="navbar-brand" href="https://crowd2map.wordpress.com" target="_blank"><dt>Crowd2map</dt></a>
+		</div>
+
+   
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<form class="navbar-form navbar-right" role="search">
+            <div class="form-group has-feedback">
+                <input id="searchbox" type="text" placeholder="Search" class="form-control">
+                <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+            </div>
+          </form>
+		<ul class="nav navbar-nav">
+		<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Home <span class="sr-only">(current)</span></a></li>
+      	<li class="nav-item"><a class="nav-link" href="../dashboard/index.htm"><i class="fa fa-tachometer" aria-hidden="true"></i>&nbsp;&nbsp;Tanzania dashboard</a></li>
+      	<li class="nav-item"><a class="nav-link" href="../Crowd2map/route.html"><i class="fa fa-road" aria-hidden="true"></i>&nbsp;&nbsp;Routing machine</a></li>
+      	<li class="active"><a class="nav-link" href="../volunteers/index.html"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;OSM volunteers stats</a></li>
+        
+			<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o" aria-hidden="true"></i>&nbsp;&nbsp;Other maps<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../Crowd2map/pma.html">OSM Project Manager App</a></li>
+						<li><a href="../Kigoma/index.html">Kigoma waterpoints</a></li>
+						<li><a href="../OSMdensity/index.html">OSM density</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+      </li>
+		
+			<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Tools <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" class="print-button"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print</a></li>
+						<li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="login-btn"><i class="fa fa-user"></i>&nbsp;&nbsp;Login</a></li>
+					</ul>
+			</li>
+
+			<li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+		
+		</ul>
+     
+    </div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</div><!-- /.container-fluid -->
+
+<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Welcome to the Tanzania data repository!</h4>
+				</div>
+				<div class="modal-body">
+					<ul class="nav nav-tabs nav-justified" id="aboutTabs">
+						<li class="active"><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About us</a></li>
+						<li><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Contact us</a></li>
+					 <li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe"></i>&nbsp;Metadata <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#boroughs-tab" data-toggle="tab">Administration regions</a></li>
+								<li><a href="#hotosm-tab" data-toggle="tab">HOTOSM task manager data</a></li>
+								<li><a href="#mapswipe-tab" data-toggle="tab">MapSwipe data </a></li>
+							</ul>
+						</li>
+					</ul>
+					<div class="tab-content" id="aboutTabsContent">
+						<div class="tab-pane fade active in" id="about">
+							<p> </p>
+							<div class="panel panel-primary">
+								<div class="panel-heading">Crowd2map Tanzania dashboard - Main features</div>
+								<ul class="list-group">
+									<li class="list-group-item">Data repository: VGI and other data from Tanzania</li>
+									<li class="list-group-item">Tanzania dashboard: A well-built platform can facilitate humanitarian organisation’s work. Organisations need an effective, comprehensive and system wide spatial data-sharing platform that contains, share and visualises existing datasets, cumulative data for reporting purposes and/or visualisation.</li>
+									<li class="list-group-item">OSM Routing machine: <a href="http://www.liedman.net/leaflet-routing-machine/" target="_blank">Leaflet Routing Machine</a> s an easy, flexible and extensible way to add routing to a Leaflet map. Using the default is just a few lines of code to add fully functional routing, but you can still customize almost every aspect of the user interface and interactions.</li>
+									<li class="list-group-item">OSM Project Manager App: Assist the PM's work. Shows the position and status of the OSM tasks; indicates the location of the MapSwipe projects so far; helps you select the location of new tasks, and the draw function helps to delineate the area and save it to a geojson file. </li>
+									<li class="list-group-item">OSM stats: OSM contributions, TOP3 volunteer, etc. </li>
+								</ul>
+							</div>
+						</div>
+						
+						<div class="tab-pane fade" id="contact">
+							<form id="contact-form" method="POST" action="https://formspree.io/crowd2map@fragosus.com">
+								<div class="well well-sm">
+									<div class="row">
+										<div class="col-md-4">
+												<label for="email">Email:</label>
+												<input type="text" class="form-control" id="email">
+										</div>
+										<div class="col-md-8">
+											<label for="message">Message:</label>
+											<textarea class="form-control" rows="8" id="message"></textarea>
+										</div>
+										<div class="col-md-12">
+											<p>
+												<button type="submit" class="btn btn-primary pull-right" data-dismiss="modal">Submit</button>
+											</p>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="boroughs-tab">
+							<p>Administration divisions <a href="www.gadm.org" target="_blank">GADM database</a> - These data were extracted from the GADM database, version 2.8, November 2015. They can be used for non-commercial purposes only. It is not allowed to redistribute these data, or use them for commercial purposes, without prior consent. </p>
+						</div>
+						<div class="tab-pane fade" id="hotosm-tab">
+							<p><a href="http://tasks.hotosm.org/" target="_blank">HOTOSM task manager</a></p>
+						</div>
+						<div class="tab-pane fade" id="mapswipe-tab">
+							<p>Mapswipe dataset is available here: <a href="https://mapswipe.heigit.org/home/" target="_blank">Mapswipe</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Login</h4>
+          </div>
+          <div class="modal-body">
+            <form id="contact-form">
+              <fieldset>
+                <div class="form-group">
+                  <label for="name">Username:</label>
+                  <input type="text" class="form-control" id="username">
+                </div>
+                <div class="form-group">
+                  <label for="email">Password:</label>
+                  <input type="password" class="form-control" id="password">
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal">Login</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+	
+<div class="container col-md-6">
+  
+    <div class="page-header"><h3 id="tables">Remote volunteers' contribution</h3></div>
+			
+			<div class="bs-component" ng-controller="TNZapp">
+				<div class="alert alert-info">
+				<p><b>Description: </b>The database shows the number of contributions with the #tanzaniadevelopmenttrust hashtag. 
+    			You can sort by number of contributions or you can sort users in alphabetical order and/or you can 
+    			use filter to find an OSM user. The data is generated with <a href="https://github.com/AmericanRedCross/osm-stats" target="_blank">osm-stats</a> from American Red Cross.
+			    PS: Don't rush, it take a time...</p> 
+				</div>
+
+ 				<form>
+    			<div class="form-group">
+      				<div class="input-group">
+        				<div class="input-group-addon"><i class="fa fa-search"></i></div>
+        				<input type="text" class="form-control" placeholder="Search for the volunteer name" ng-model="searchuser">
+      			</div>      
+    			</div>
+  			</form>
+
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th><a ng-click="sort('name')">Name<span ng-show="sortType=='name'" ng-class="{'fa fa-caret-up':reverse,'fa fa-caret-down':!reverse}"></span></th>
+						<th><a ng-click="sort('user_id')">User ID<span ng-show="sortType=='user_id'" ng-class="{'fa fa-caret-up':reverse,'fa fa-caret-down':!reverse}"></span></th>
+						<th><a ng-click="sort('edits')">Edits<span ng-show="sortType=='edits'" ng-class="{'fa fa-caret-up':reverse,'fa fa-caret-down':!reverse}"></span></th>
+						<th><a ng-click="sort('changesets')">Changesets<span ng-show="sortType=='changesets'" ng-class="{'fa fa-caret-up':reverse,'fa fa-caret-down':!reverse}"></span></th>
+						<th><a ng-click="sort('roads')">Roads<span ng-show="sortType=='roads'" ng-class="{'fa fa-caret-up':reverse,'fa fa-caret-down':!reverse}"></span></th>
+						<th><a ng-click="sort('buildings')">Buildings<span ng-show="sortType=='roads'" ng-class="{'fa fa-caret-up':reverse,'fa fa-caret-down':!reverse}"></span></th>
+						<th><a ng-click="sort('created_at')">Last contribution<span ng-show="sortType=='created_at'" ng-class="{'fa fa-caret-up':reverse,'fa fa-caret-down':!reverse}"></span></th>
+					</tr>
+					</thead>
+					<tbody>
+		<!--			<tr dir-paginate="user in TNZvolunteers|orderBy:'-created_at':reverse|filter:searchuser|itemsPerPage:10">  -->
+							<tr dir-paginate="user in TNZvolunteers|orderBy:sortType:reverse|filter:searchuser|itemsPerPage:7">
+							<td>{{user.name}}</td>
+							<td>{{user.user_id}}</td>
+							<td>{{user.edits}}</td>
+							<td>{{user.changesets}}</td>
+							<td>{{user.roads}}</td>
+							<td>{{user.buildings}}</td>
+							<td>{{user.created_at}}</td>
+						</tr>
+					</tbody>
+
+				</table> 
+				<div><p><b>Number of volunteers: </b><td>{{TNZvolunteers.length}}</td></div>
+				
+
+					<dir-pagination-controls max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+ 		</div>
+</div>
+
+<div class="container col-md-3">
+	<div class="page-header"><h3>Hashtag stats</h3></div>
+		<div class="alert alert-success">
+			<div class="mypanel"></div>
+			<div class="mypanel2"></div>
+		</div>
+	</div>
+</div>
+
+<div class="container col-md-3">
+	<div class="page-header"><h3>TOP3</h3></div>
+		<div >
+			<div><p><b>Number of buildings - the most active volunteers: </b><span id="resultb"></span></p></div>
+			<div><p><b>Mapped road network in km - the most active volunteers:</b><span id="resultr"></span></p></div><br>			
+			<div><p><b><a href="http://birkbeck.maps.arcgis.com/apps/opsdashboard/index.html#/44d47ce9a4fc4610aceff50d63394d76" target="_blank">Check our dashboard too - created by ArcGIS Online</a></b></p></div>			
+			
+		</div>
+	</div>
+</div>
+
+
+
+</body>
+  
+<script type="text/javascript">
+
+$("#about-btn").click(function() {
+  $("#aboutModal").modal("show");
+  $(".navbar-collapse.in").collapse("hide");
+  return false;
+});
+
+$("#login-btn").click(function() {
+  $("#loginModal").modal("show");
+  $(".navbar-collapse.in").collapse("hide");
+  return false;
+});
+
+$('.print-button').on('click', function() {  
+  window.print();  
+  return false; 
+});
+
+//reload every 10 min
+    window.onload = function() {
+        setTimeout(function () {
+            location.reload()
+        }, 600000);
+     };
+
+//call data for the table
+
+  
+
+	
+	var app = angular.module('TNZapp', ['angularUtils.directives.dirPagination']);
+
+	app.controller('TNZapp',function($scope, $http){
+		$scope.TNZvolunteers = []; 
+		$http.get("https://osm-stats-production-api.azurewebsites.net/hashtags/tanzaniadevelopmenttrust/users").success(function(response){ 
+
+			$scope.TNZvolunteers = response;  
+		});
+	
+
+    $scope.sort = function(keyname){
+		$scope.sortType = keyname;   
+		$scope.reverse = !$scope.reverse; 
+	}
+	
+
+	});
+
+
+	var OSMAPI = "https://osm-stats-production-api.azurewebsites.net/";
+
+
+  var buildings = alasql("SELECT TOP 3 * FROM JSON( 'https://osm-stats-production-api.azurewebsites.net/hashtags/tanzaniadevelopmenttrust/users') ORDER BY buildings DESC",[], function(top3buildings){
+
+		function displayTop3Buildings(top3buildings) {
+	    var retval = '<ul>'; for (var b in top3buildings) { var current = top3buildings[b]; retval += '<li><strong>' + current['name'] + ': </strong>' + current['buildings'] + '</li>\n'; } retval += '</ul>'; return retval;
+		}
+		document.getElementById("resultb").innerHTML  = displayTop3Buildings(top3buildings);
+	  });
+
+  var roads = alasql("SELECT TOP 3 * FROM JSON('https://osm-stats-production-api.azurewebsites.net/hashtags/tanzaniadevelopmenttrust/users') ORDER BY roads DESC",[], function(top3roards){
+
+	function displaytop3roards(top3roards) {
+    var retval = '<ul>'; for (var b in top3roards) { var current = top3roards[b]; retval += '<li><strong>' + current['name'] + ': </strong>' + current['roads'] + '</li>\n'; } retval += '</ul>'; return retval;
+	}
+		document.getElementById("resultr").innerHTML  = displaytop3roards(top3roards);
+  });
+
+
+	
+	
+	$.getJSON( OSMAPI + "group-summaries/" + "crowd2map", function(data) {
+        
+		var summary = `<b>#crowd2map - main numbers</b><br><br>
+					
+			<b>Number of volunteers:</b> ${data.crowd2map.users}<br>
+			<b>Length of added road network:</b> ${data.crowd2map.road_km_add + data.crowd2map.road_km_mod} km<br>
+			<b>Added POI (Point of interest):</b> ${data.crowd2map.poi_count_add + data.crowd2map.poi_count_mod}<br>
+			<b>Added buildings:</b> ${data.crowd2map.building_count_add + data.crowd2map.building_count_mod}<br>
+			<b>Total edits:</b> ${data.crowd2map.edits}<br>
+			<b>Last updated:</b> ${data.crowd2map.last_updated} <br><br>`
+                    
+      $(".mypanel").html(summary);
+    
+		});
+		
+
+		$.getJSON(  OSMAPI + "group-summaries/" + "tanzaniadevelopmenttrust", function(data) {
+        
+				var summary = `<b>#tanzaniadevelopmenttrust - main numbers</b><br><br>
+							
+					<b>Number of volunteers:</b> ${data.tanzaniadevelopmenttrust.users}<br>
+					<b>Covered area in Tanzania:</b> 111500 sq km <br>
+					<b>Number of HOTOSM tasks:</b> 66<br>
+					<b>Number of MapSwipe tasks:</b> 10<br>
+					<b>Length of added road network:</b> ${data.tanzaniadevelopmenttrust.road_km_add + data.tanzaniadevelopmenttrust.road_km_mod} km<br>
+					<b>Added POI (Point of interest):</b> ${data.tanzaniadevelopmenttrust.poi_count_add + data.tanzaniadevelopmenttrust.poi_count_mod}<br>
+					<b>Added buildings:</b> ${data.tanzaniadevelopmenttrust.building_count_add + data.tanzaniadevelopmenttrust.building_count_mod}<br>
+					<b>Total edits:</b> ${data.tanzaniadevelopmenttrust.edits}<br>
+					<b>Last updated:</b> ${data.tanzaniadevelopmenttrust.last_updated} <br><br>`
+												
+						
+						$(".mypanel2").html(summary);
+				});	
+
+</script>
+</html>

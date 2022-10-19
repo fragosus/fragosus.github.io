@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Kigoma - waterpoints</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Load CSS -->
+    
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="css/leaflet-measure.css" />
+    <link rel="stylesheet" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+    
+
+            <!-- Loads a lot of JS files ...  --> 
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+    
+	<script src="js/multi-style-layer.js"></script>
+    <script src="https://unpkg.com/esri-leaflet@2.0.8" integrity="sha384-ze7rgny7/YGFxBlVgTBdOABNWe5V9BYjju/qwqJhCU8XJHtuEnRlbUpN5lXyY706"     crossorigin=""></script>
+    <script src="js/leaflet-svg-shape-markers.min.js"></script>
+    <script src="js/OSMBuildings-Leaflet.js"></script>
+    <script src="js/bing.min.js "></script>
+    
+
+    <!-- OMG, more JS files, We should throw out some of ...  -->
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/leaflet-tilelayer-wmts.js"></script>
+    <script src="js/leaflet-panel-layers.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/leaflet-measure.js"></script>
+    <script src="js/intro.min.js"></script>
+    <script src="js/leaflet.markercluster.js"></script>
+    <script src="js/leaflet-search.js"></script>
+
+
+
+    </head>
+
+    <body>
+
+	<div class="navbar navbar-default navbar-inverse bg-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+				<div class="navbar-icon-container">
+					<a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+					<a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
+				</div>
+				<a class="navbar-brand" href="https://crowd2map.wordpress.com" target="_blank"><dt>Crowd2map</dt></a>
+		</div>
+
+   
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<form class="navbar-form navbar-right" role="search">
+            <div class="form-group has-feedback">
+                <input id="searchbox" type="text" placeholder="Search" class="form-control">
+                <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+            </div>
+          </form>
+		<ul class="nav navbar-nav">
+		<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Home <span class="sr-only">(current)</span></a></li>
+      	<li class="nav-item"><a class="nav-link" href="../dashboard/index.htm"><i class="fa fa-tachometer" aria-hidden="true"></i>&nbsp;&nbsp;Tanzania dashboard</a></li>
+      	<li class="nav-item"><a class="nav-link" href="../Crowd2map/route.html"><i class="fa fa-road" aria-hidden="true"></i>&nbsp;&nbsp;Routing machine</a></li>
+      	<li class="nav-item"><a class="nav-link" href="../volunteers/index.html"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;OSM volunteers stats</a></li>
+        
+		<li class="dropdown active">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o" aria-hidden="true"></i>&nbsp;&nbsp;Other maps<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../Crowd2map/pma.html">OSM Project Manager App</a></li>
+			<li class="active"><a href="../Kigoma/index.html">Kigoma waterpoints</a></li>
+			<li><a href="../OSMdensity/index.html">OSM density</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+      </li>
+		
+			<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Tools <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" class="print-button"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Print</a></li>
+						<li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="login-btn"><i class="fa fa-user"></i>&nbsp;&nbsp;Login</a></li>
+					</ul>
+			</li>
+
+			<li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+		
+		</ul>
+     
+    </div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</div><!-- /.container-fluid -->
+
+<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Welcome to the Tanzania data repository!</h4>
+				</div>
+				<div class="modal-body">
+					<ul class="nav nav-tabs nav-justified" id="aboutTabs">
+						<li class="active"><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About us</a></li>
+						<li><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Contact us</a></li>
+					 <li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe"></i>&nbsp;Metadata <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#boroughs-tab" data-toggle="tab">Administration regions</a></li>
+								<li><a href="#hotosm-tab" data-toggle="tab">HOTOSM task manager data</a></li>
+								<li><a href="#mapswipe-tab" data-toggle="tab">MapSwipe data </a></li>
+							</ul>
+						</li>
+					</ul>
+					<div class="tab-content" id="aboutTabsContent">
+						<div class="tab-pane fade active in" id="about">
+							<p> </p>
+							<div class="panel panel-primary">
+								<div class="panel-heading">Crowd2map Tanzania dashboard - Main features</div>
+								<ul class="list-group">
+									<li class="list-group-item">Data repository: VGI and other data from Tanzania</li>
+									<li class="list-group-item">Tanzania dashboard: A well-built platform can facilitate humanitarian organisation’s work. Organisations need an effective, comprehensive and system wide spatial data-sharing platform that contains, share and visualises existing datasets, cumulative data for reporting purposes and/or visualisation.</li>
+									<li class="list-group-item">OSM Routing machine: <a href="http://www.liedman.net/leaflet-routing-machine/" target="_blank">Leaflet Routing Machine</a> s an easy, flexible and extensible way to add routing to a Leaflet map. Using the default is just a few lines of code to add fully functional routing, but you can still customize almost every aspect of the user interface and interactions.</li>
+									<li class="list-group-item">OSM Project Manager App: Assist the PM's work. Shows the position and status of the OSM tasks; indicates the location of the MapSwipe projects so far; helps you select the location of new tasks, and the draw function helps to delineate the area and save it to a geojson file. </li>
+									<li class="list-group-item">OSM stats: OSM contributions, TOP3 volunteer, etc. </li>
+								</ul>
+							</div>
+						</div>
+						
+						<div class="tab-pane fade" id="contact">
+							<form id="contact-form">
+								<div class="well well-sm">
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="first-name">First Name:</label>
+												<input type="text" class="form-control" id="first-name">
+											</div>
+											<div class="form-group">
+												<label for="last-name">Last Name:</label>
+												<input type="text" class="form-control" id="last-name">
+											</div>
+											<div class="form-group">
+												<label for="email">Email:</label>
+												<input type="text" class="form-control" id="email">
+											</div>
+					<div class="form-group">
+												<label for="org">Organisation:</label>
+												<input type="text" class="form-control" id="org">
+											</div>
+										</div>
+										<div class="col-md-8">
+											<label for="message">Message:</label>
+											<textarea class="form-control" rows="8" id="message"></textarea>
+										</div>
+										<div class="col-md-12">
+											<p>
+												<button type="submit" class="btn btn-primary pull-right" data-dismiss="modal">Submit</button>
+											</p>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="boroughs-tab">
+							<p>Administration divisions <a href="www.gadm.org" target="_blank">GADM database</a> - These data were extracted from the GADM database, version 2.8, November 2015. They can be used for non-commercial purposes only. It is not allowed to redistribute these data, or use them for commercial purposes, without prior consent. </p>
+						</div>
+						<div class="tab-pane fade" id="hotosm-tab">
+							<p><a href="http://tasks.hotosm.org/" target="_blank">HOTOSM task manager</a></p>
+						</div>
+						<div class="tab-pane fade" id="mapswipe-tab">
+							<p>Mapswipe dataset is available here: <a href="https://mapswipe.heigit.org/home/" target="_blank">Mapswipe</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Login</h4>
+          </div>
+          <div class="modal-body">
+            <form id="contact-form">
+              <fieldset>
+                <div class="form-group">
+                  <label for="name">Username:</label>
+                  <input type="text" class="form-control" id="username">
+                </div>
+                <div class="form-group">
+                  <label for="email">Password:</label>
+                  <input type="password" class="form-control" id="password">
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal">Login</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+      
+    <div id="map"></div>
+    
+
+    <div id="panel" class="leaflet-bar">Click on the map to query for waterpoints within
+        <select name="distance" id="distanceSelect">
+            <option value="500">500<options>
+            <option value="1000">1000<options>
+            <option value="1500">1500<options>
+            <option value="2000">2000<options>
+            <option value="2500">2500<options>
+            <option value="5000">5000<options>
+        </select>meters
+    </div>
+
+
+    <!-- Load data -->
+    <script src="data/Kigomawards0.js"></script>
+    <script src="data/clinicKigoma1.js"></script>
+    <script src="data/hospitalKigoma2.js"></script>
+    <script src="data/schoolKigoma3.js"></script>
+    <script src="data/Kigomawaterpoints4.js"></script>
+        
+      
+        
+        <script>
+     
+	$("#about-btn").click(function() {
+	$("#aboutModal").modal("show");
+	$(".navbar-collapse.in").collapse("hide");
+	return false;
+	});
+
+	$("#login-btn").click(function() {
+	$("#loginModal").modal("show");
+	$(".navbar-collapse.in").collapse("hide");
+	return false;
+	});
+
+	$('.print-button').on('click', function() {  
+	window.print();  
+	return false; // why false?
+	});
+
+
+
+
+	 var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 0.8
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+    var map = L.map('map').setView([-4.29, 30.40], 9);
+      
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+      
+        L.control.locate().addTo(map);
+        
+        var measureControl = new L.Control.Measure({
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares',
+            position: 'topleft'
+        });
+      
+        measureControl.addTo(map);
+      
+      
+        var bounds_group = new L.featureGroup([]);
+        var basemap0 = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 20
+        });
+        basemap0.addTo(map);
+      
+
+
+       	var CartoDB_DarkMatter = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+	subdomains: 'abcd',
+	maxZoom: 19
+	});
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+    var borderstyle = { color: "#000", weight: 0.5, opacity: 0.8, fillOpacity: 0};
+    var adminborders = L.geoJSON(json_Kigomawards0, {style: borderstyle });
+    map.addLayer(adminborders);
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+        function pop_Kigomawards0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(style_Kigomawards0_0(feature));
+
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent =  feature.properties.District_N + ' district;' + '<br/>' + feature.properties.Ward_Name + ' ward' ; 
+            layer.bindPopup(popupContent);
+        }
+
+        function style_Kigomawards0_0(feature) {
+            if (feature.properties['Pop_Den'] >= 3.000000 && feature.properties['Pop_Den'] <= 52.666667 ) {
+                return {pane: 'pane_Kigomawards0', opacity: 1, color: 'rgba(0,0,0,1.0)', dashArray: '', lineCap: 'butt', lineJoin: 'miter', weight: 1.0, fillOpacity: 0.55, fillColor: 'rgba(252,255,164,1.0)' }
+            }
+            if (feature.properties['Pop_Den'] >= 52.666667 && feature.properties['Pop_Den'] <= 111.333333 ) {
+                return {pane: 'pane_Kigomawards0', opacity: 1, color: 'rgba(0,0,0,1.0)', dashArray: '', lineCap: 'butt', lineJoin: 'miter', weight: 1.0, fillOpacity: 0.55, fillColor: 'rgba(252,164,11,1.0)' }
+            }
+            if (feature.properties['Pop_Den'] >= 111.333333 && feature.properties['Pop_Den'] <= 141.000000 ) {
+                return {pane: 'pane_Kigomawards0', opacity: 1, color: 'rgba(0,0,0,1.0)', dashArray: '', lineCap: 'butt', lineJoin: 'miter', weight: 1.0, fillOpacity: 0.55, fillColor: 'rgba(221,80,57,1.0)' }
+            }
+            if (feature.properties['Pop_Den'] >= 141.000000 && feature.properties['Pop_Den'] <= 219.000000 ) {
+                return {pane: 'pane_Kigomawards0', opacity: 1, color: 'rgba(0,0,0,1.0)', dashArray: '', lineCap: 'butt', lineJoin: 'miter', weight: 1.0, fillOpacity: 0.55, fillColor: 'rgba(147,37,103,1.0)' }
+            }
+            if (feature.properties['Pop_Den'] >= 219.000000 && feature.properties['Pop_Den'] <= 456.333333 ) {
+                return {pane: 'pane_Kigomawards0', opacity: 1, color: 'rgba(0,0,0,1.0)', dashArray: '', lineCap: 'butt', lineJoin: 'miter', weight: 1.0,  fillOpacity: 0.55, fillColor: 'rgba(66,10,104,1.0)' }
+            }
+            if (feature.properties['Pop_Den'] >= 456.333333 && feature.properties['Pop_Den'] <= 14255.000000 ) {
+                return {pane: 'pane_Kigomawards0', opacity: 1, color: 'rgba(0,0,0,1.0)', dashArray: '', lineCap: 'butt', lineJoin: 'miter', weight: 1.0, fillOpacity: 0.55, fillColor: 'rgba(0,0,4,1.0)' }
+            }
+        }
+        map.createPane('pane_Kigomawards0');
+        map.getPane('pane_Kigomawards0').style.zIndex = 400;
+        map.getPane('pane_Kigomawards0').style['mix-blend-mode'] = 'normal';
+    var layer_Kigomawards0 = new L.geoJson(json_Kigomawards0, {
+        attribution: '<a href=""></a>',
+        pane: 'pane_Kigomawards0',
+        onEachFeature: pop_Kigomawards0,
+        style: style_Kigomawards0_0,
+    });
+        bounds_group.addLayer(layer_Kigomawards0);
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+
+
+        function pop_clinicKigoma1(feature, layer) {
+    		var popupText = 'Clinic name: ' + feature.properties.name + "<br>" + 'Coordinates: ' + feature.geometry.coordinates;
+			layer.bindPopup(popupText);
+        }
+
+
+        function style_clinicKigoma1_0() {
+            return {
+                pane: 'pane_clinicKigoma1',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/clinic.svg',
+            iconSize: [14, 14]
+        }),
+            }
+        }
+
+        
+        map.createPane('pane_clinicKigoma1');
+        map.getPane('pane_clinicKigoma1').style.zIndex = 401;
+        map.getPane('pane_clinicKigoma1').style['mix-blend-mode'] = 'normal';
+    
+        var layer_clinicKigoma1 = new L.geoJson(clinic, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_clinicKigoma1',
+            onEachFeature: pop_clinicKigoma1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.marker(latlng, style_clinicKigoma1_0(feature))
+            },
+        });
+        var cluster_clinicKigoma1 = new L.MarkerClusterGroup({showCoverageOnHover: false});
+        cluster_clinicKigoma1.addLayer(layer_clinicKigoma1);
+
+        bounds_group.addLayer(layer_clinicKigoma1);
+
+//--------------------------------------------------------------------------------------------------------------------------------
+
+        function pop_hospitalKigoma2(feature, layer) {
+ 			var popupText = 'Hospital name: ' + feature.properties.name + "<br>" + 'Coordinates: ' + feature.geometry.coordinates;
+			layer.bindPopup(popupText);
+        }
+
+        function style_hospitalKigoma2_0() {
+            return {
+                pane: 'pane_hospitalKigoma2',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/hospital.svg',
+            iconSize: [12, 12]
+        }),
+            }
+        }
+        
+        map.createPane('pane_hospitalKigoma2');
+        map.getPane('pane_hospitalKigoma2').style.zIndex = 402;
+        map.getPane('pane_hospitalKigoma2').style['mix-blend-mode'] = 'normal';
+        var layer_hospitalKigoma2 = new L.geoJson(hospital, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_hospitalKigoma2',
+            onEachFeature: pop_hospitalKigoma2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.marker(latlng, style_hospitalKigoma2_0(feature))
+            },
+        });
+        var cluster_hospitalKigoma2 = new L.MarkerClusterGroup({showCoverageOnHover: true});
+        cluster_hospitalKigoma2.addLayer(layer_hospitalKigoma2);
+
+        bounds_group.addLayer(layer_hospitalKigoma2);
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+
+        function pop_schoolKigoma3(feature, layer) {
+			var popupText = 'School name: ' + feature.properties.name + "<br>" + 'Coordinates: ' + feature.geometry.coordinates;
+			layer.bindPopup(popupText);
+        }
+
+       
+        function style_schoolKigoma3_0() {
+            return {
+                pane: 'pane_schoolKigoma3',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/school.svg',
+            iconSize: [14, 14]
+        }),
+            }
+        }
+
+        map.createPane('pane_schoolKigoma3');
+        map.getPane('pane_schoolKigoma3').style.zIndex = 403;
+        map.getPane('pane_schoolKigoma3').style['mix-blend-mode'] = 'normal';
+     
+        var layer_schoolKigoma3 = new L.geoJson(school, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_schoolKigoma3',
+            onEachFeature: pop_schoolKigoma3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.marker(latlng, style_schoolKigoma3_0(feature))
+            },
+        });
+        var cluster_schoolKigoma3 = new L.MarkerClusterGroup({showCoverageOnHover: false});
+        cluster_schoolKigoma3.addLayer(layer_schoolKigoma3);
+
+        bounds_group.addLayer(layer_schoolKigoma3);
+        
+//------------------------------------------------------------------------------------------------------------------------------------
+  
+  function Kigomawaterpoint(feature, layer) {
+			var popupText =  'Closest village: ' + feature.properties.VILLAGE + "<br>" + 'Pump status: ' + feature.properties.STATUS + "<br>" + 'Water quantity: ' + feature.properties.WATER_QUAN; 
+			layer.bindPopup(popupText);
+    }
+    
+  var waterpoint = L.esri.featureLayer({
+    url: 'https://services6.arcgis.com/qnuLPzqZhawWzvJ1/arcgis/rest/services/Kigomawaterpoints4/FeatureServer/0',
+    onEachFeature: Kigomawaterpoint,
+    pointToLayer: function (geojson, latlng) {
+      return L.circleMarker(latlng);
+    },
+    style:{ shape: 'triangle', color: 'rgba(0,0,0,1.0)', radius: 5.0, opacity: 1, weight: 1, fillOpacity: 1, fillColor: 'rgba(32, 48, 128, 1)'}
+  });
+
+  var distance = document.getElementById('distanceSelect');
+  
+
+  var previousIds = [];
+
+  map.on('click', function(e){
+    waterpoint.query().nearby(e.latlng, distance.value).ids(function(error, ids){
+      for (var j = 0; j < previousIds.length; j++) {
+        waterpoint.resetStyle(previousIds[j]);
+      }
+
+      previousIds = ids;
+
+      for (var i = 0; i < ids.length; i++) {
+        waterpoint.setFeatureStyle(ids[i], {
+          color: 'rgba(0,0,0,1.0)', 
+          radius: 5.0, 
+          opacity: 1, 
+          weight: 1, 
+          fillOpacity: 1, 
+          fillColor: 'rgba(213, 26, 26, 1)'
+        });
+      }
+    });
+  });
+
+
+
+  //------------------------------------------------------------------------------------------------------------------------------------          
+    
+    	var bing_key = 'AopsdXjtTu-IwNoCTiZBtgRJ1g7yPkzAi65nXplc-eLJwZHYlAIf2yuSY_Kjg3Wn'
+	    var imagerySet = "Aerial";
+	    var	bing = L.tileLayer.bing(bing_key, {type: imagerySet});
+    
+   //------------------------------------------------------------------------------------------------------------------------------------                
+        
+         // create custom icon
+        var targeticon = L.icon({
+        iconUrl: 'https://cdn4.iconfinder.com/data/icons/real-estate-1/512/real_estate-512.png',
+        iconSize: [20, 20], // size of the icon
+        popupAnchor: [0,-15]
+        });
+        
+        var villages = new L.LayerGroup();
+
+        L.marker([-4.83148, 30.11883], {icon: targeticon}).bindPopup("Kigembe").addTo(villages);
+        L.marker([-4.98406, 30.00366], {icon: targeticon}).bindPopup("Mazungwe").addTo(villages);
+        L.marker([-4.19099, 30.23304], {icon: targeticon}).bindPopup("Heru Ushingo").addTo(villages);
+        L.marker([-4.2007, 30.4928], {icon: targeticon}).bindPopup("Mvugwe Village").addTo(villages);
+
+ //------------------------------------------------------------------------------------------------------------------------------------                  
+
+        var baseMaps = {"OpenStreetMap":basemap0, "DarkMatter": CartoDB_DarkMatter, "Bing Maps Aerial":bing};
+        L.control.layers(baseMaps,{
+            '<img src="legend/Kigomawaterpoints4.png" /> Kigoma waterpoints': waterpoint,
+            '<img src="legend/schoolKigoma3.png" /> Schools in Kigoma': cluster_schoolKigoma3,
+            '<img src="legend/hospitalKigoma2.png" /> Hospitals in Kigoma': cluster_hospitalKigoma2,
+            '<img src="legend/clinicKigoma1.png" /> Clinics in Kigoma': cluster_clinicKigoma1,
+            'Population density <br /><br /> <b>Legend</b> <br />ward pop dens. (people per km2)<table><tr><td style="text-align: right;"><img src="legend/Kigomawards0_3530.png" /></td><td> 3 - 53 </td></tr><tr><td style="text-align: center;"><img src="legend/Kigomawards0_531111.png" /></td><td> 53 - 111 </td></tr><tr><td style="text-align: center;"><img src="legend/Kigomawards0_1111412.png" /></td><td> 111 - 141 </td></tr><tr><td style="text-align: center;"><img src="legend/Kigomawards0_1412193.png" /></td><td> 141 - 219 </td></tr><tr><td style="text-align: center;"><img src="legend/Kigomawards0_2194564.png" /></td><td> 219 - 456 </td></tr><tr><td style="text-align: center;"><img src="legend/Kigomawards0_456142555.png" /></td><td> 456 - 14255 </td></tr></table> <br />': layer_Kigomawards0, 
+            '<img src="legend/village.png" /> Selected villages': villages,
+            },{collapsed:false}).addTo(map);
+
+        
+
+
+
+
+
+
+        </script>
+    </body>
+</html>

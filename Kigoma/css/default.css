@@ -1,0 +1,23 @@
+html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            }
+#map {
+    height: 100%;
+    width: 100%;
+    Position: fixed;
+    }
+        
+#panel {
+    position: absolute; 
+    bottom: 20px; 
+    right: 10px; 
+    z-index: 1000; 
+    background: white; 
+    padding: 6px; 
+}
+
+.navbar {
+    margin-bottom:0px;
+    }
